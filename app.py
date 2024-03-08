@@ -4,16 +4,28 @@ import pandas as pd
 from helper.recommender_system import recommender, matrix_display
 
 st.set_page_config(layout="wide")
-
-# st.title('Product Recommender System')
-
 product_details = pkl.load(open('Product-details.pkl', 'rb'))
-similarity_metrix = pkl.load(open('top10 Similar Products Index Matrix.pkl', 'rb'))
-top_products_index = pd.read_pickle('top100_product_indexs.pkl')
+similarity_metrix = pkl.load(open('top10 Similar Products.pkl', 'rb'))
+# Load product details
 try:
-    top_products_index = pkl.load(open('top100_product_indexs.pkl', 'rb'))
+    product_details = pd.read_pickle('Product-details.pkl')
 except Exception as e:
-    st.error(f"Error occurred while loading 'top100_product_indexs.pkl': {e}")
+    st.error(f"Error occurred while loading 'Product-details.pkl': {e}")
+    product_details = pd.DataFrame()  # Provide an empty DataFrame in case of error
+
+# Load similarity matrix
+try:
+    similarity_matrix = pkl.load(open('top10 Similar Products.pkl', 'rb'))
+except Exception as e:
+    st.error(f"Error occurred while loading 'top10 Similar Products.pkl': {e}")
+    similarity_matrix = None  # Set to None in case of error
+
+# Load top products index with error handling
+try:
+    top_products_index = pd.read_pickle('top100_product.pkl')
+except Exception as e:
+    st.error(f"Error occurred while loading 'top100_product.pkl': {e}")
+    top_products_index = pd.DataFrame()  # Provide an empty DataFrame in case of error
 
 
 # top_products(top_products_index,product_details,20,4)
